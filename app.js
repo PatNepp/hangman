@@ -1,6 +1,6 @@
 const wordEl = document.querySelector('.word')
-const wrongLetterEl = document.querySelector('.wrong-letters')
-const playAgainBtn = document.querySelector('.play-again')
+const wrongLetterEl = document.getElementById('wrong-letters')
+const playAgainBtn = document.querySelector('.play-button')
 const popup = document.querySelector('.popup-container')
 const notification = document.querySelector('.notification-container')
 const finalMessage = document.querySelector('.final-message')
@@ -34,7 +34,25 @@ function displayWord() {
 }
 
 const updateWrongLettersEl = () => {
+    wrongLetterEl.innerHTML =  `
+        ${wrongLetters.length > 0 ? '<p>Wrong Letters</p>' : ''}
+        ${wrongLetters.map(letter => `<span> ${letter}</span>`)} 
+    `
 
+    figureParts.forEach((part, i) => {
+        const errors = wrongLetters.length;
+
+        if(i < errors) {
+            part.style.display = 'block'
+        } else {
+            part.style.display = 'none'
+        }
+    })
+
+    if(wrongLetters.length === figureParts.length) {
+        finalMessage.innerText = 'Oh SHIT! You Lost! 🥲'
+        popup.style.display = 'flex'
+    }
 }
 
 const showNotification = () => {
@@ -56,16 +74,28 @@ window.addEventListener('keydown', (e) => {
             } else {
                 showNotification()
             }
-        }
-    } else {
-        if(!wrongLetters.includes(letter)) {
-            wrongLetters.push(letter)
-
-            updateWrongLettersEl()
         } else {
-            showNotification()
+            if(!wrongLetters.includes(letter)) {
+                wrongLetters.push(letter)
+
+                updateWrongLettersEl()
+            } else {
+                showNotification()
+            }
         }
-    }
+    } 
+})
+
+playAgainBtn.addEventListener('click', () => {
+    wrongLetters.splice(0)
+    correctLetters.splice(0)
+
+    selectedWord = words[Math.floor(Math.random() * words.length)]
+
+    displayWord()
+
+    updateWrongLettersEl()
+    popup.style.display = 'none'
 })
 
 displayWord()
