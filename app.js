@@ -4,6 +4,7 @@ const playAgainBtn = document.querySelector('.play-button')
 const popup = document.querySelector('.popup-container')
 const notification = document.querySelector('.notification-container')
 const finalMessage = document.querySelector('.final-message')
+const messageText = document.querySelector('.message-text')
 const figureParts = document.querySelectorAll('.figure-part')
 
 const words = ['application', 'programming', 'interface', 'conglomerate', 'guacamole', 'elephant']
@@ -51,6 +52,7 @@ const updateWrongLettersEl = () => {
 
     if(wrongLetters.length === figureParts.length) {
         finalMessage.innerText = 'Oh SHIT! You Lost! 🥲'
+        messageText.innerText = `The word was: ${selectedWord}`
         popup.style.display = 'flex'
     }
 }
